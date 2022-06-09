@@ -131,7 +131,7 @@ function App() {
   return (
     <div className="w-[375px] p-3 h-[800px] mx-auto border-2 relative">
       <div className="flex justify-between">
-        <p className="font-bold text-2xl" onClick={() => navigate("/profile")}>
+        <p className="font-bold text-2xl cursor-pointer" onClick={() => navigate("/profile")}>
           Hi User
         </p>
         <p className="text-2xl">Welcome</p>
@@ -266,7 +266,14 @@ function App() {
           <p className="text-xs my-auto cursor-pointer" onClick={() => setViewSortBy(false)}>close</p>
         </div>
         <hr />
-        <p className="cursor-pointer" >Most recent</p>
+        <p className={`cursor-pointer ${filterObj.sortBy === -1 ? "" : "bg-blue-500 text-white"}`} onClick={() => {
+          setFilterObj(prev => {
+            if (prev.sortBy === -1) {
+              return { ...prev, sortBy: 1 };
+            }
+            return { ...prev, sortBy: -1 }
+          })
+        }}  >Most recent</p>
       </div>
     </div>
   );

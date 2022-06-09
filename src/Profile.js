@@ -95,10 +95,10 @@ const Profile = () => {
     } else {
       errorObject.dateOfBirth = "";
     }
-    if(form.timeOfBirth===""){
-      errorObject.timeOfBirth= "*Field is mandatory";
-    }else{
-      errorObject.timeOfBirth=""
+    if (form.timeOfBirth === "") {
+      errorObject.timeOfBirth = "*Field is mandatory";
+    } else {
+      errorObject.timeOfBirth = ""
     }
     setError(errorObject);
   };
@@ -121,17 +121,16 @@ const Profile = () => {
       </div>
       <div>
         {/* user name,email,password,countryCode,phoneNumber,gender,language,maritalStatus,dateOfBirth,timeOfBirth { hours,minutes,seconds} */}
-        <div className="flex ">
-          <div>
+        <div className="flex w-[90%] justify-between mx-auto">
+          <div className="py-1">
             <p>Username</p>
             <input
               type="text"
               name="userName"
               placeholder="Enter name here"
               onChange={handleChange}
-              className={`border-2  ${
-                error.userName ? "border-red-500" : "border-gray-500"
-              } `}
+              className={`border-2 p-2   ${error.userName ? "border-red-500" : "border-gray-500"
+                } `}
             />
             <p className="text-red-500">{error.userName}</p>
           </div>
@@ -142,20 +141,19 @@ const Profile = () => {
             <img src="" type="" />
           </div>
         </div>
-        <div>
+        <div className="w-[90%] py-1 mx-auto">
           <p>Email</p>
           <input
             type="email"
             name="email"
             placeholder="Your email ID"
             onChange={handleChange}
-            className={`border-2  ${
-              error.email ? "border-red-500" : "border-gray-500"
-            } `}
+            className={`border-2  p-2 w-[100%] ${error.email ? "border-red-500" : "border-gray-500"
+              } `}
           />
           <p className="text-red-500">{error.email}</p>
         </div>
-        <div>
+        <div className="py-1 mx-auto w-[90%]">
           <p>Password</p>
           <input
             type="password"
@@ -163,15 +161,14 @@ const Profile = () => {
             name="password"
             placeholder="Min 8 char"
             onChange={handleChange}
-            className={`border-2  ${
-              error.password ? "border-red-500" : "border-gray-500"
-            } `}
+            className={`border-2 p-2 w-[100%]  ${error.password ? "border-red-500" : "border-gray-500"
+              } `}
           />
           <p className="text-red-500">{error.password}</p>
         </div>
-        <div>
+        <div className="py-1 mx-auto w-[90%] " >
           <p>Phone Number</p>
-          <select name="countryCode" onChange={handleChange}>
+          <select name="countryCode" className="w-[20%] bg-gray-100 py-2" onChange={handleChange}>
             <option value="+91">+91</option>
             <option value="+1">+1</option>
           </select>
@@ -180,44 +177,45 @@ const Profile = () => {
             placeholder="Enter mobile no"
             name="phoneNumber"
             onChange={handleChange}
-            className={`border-2  ${
-              error.phoneNumber ? "border-red-500" : "border-gray-500"
-            } `}
+            className={`border-2 p-2  w-[80%] ${error.phoneNumber ? "border-red-500" : "border-gray-500"
+              } `}
           />
           <p className="text-red-500">{error.password}</p>
         </div>
-        <div>
-          <p>Gender</p>
+        <div className="py-1 flex w-[90%] mx-auto">
+          <p className="w-[30%] my-auto">Gender</p>
           <div
-            className={`border-2  ${
-              error.gender ? "border-red-500" : "border-gray-500"
-            } `}
+            className={`flex p-2 w-[70%] justify-around  ${error.gender ? "border-2 border-red-500" : "border-gray-500"
+              } `}
           >
-            <input
-              type="radio"
-              id="male"
-              name="gender"
-              value="male"
-              onChange={handleChange}
-            />
-            <label htmlFor="male">Male</label>
-            <input
-              type="radio"
-              id="female"
-              name="gender"
-              value="female"
-              onChange={handleChange}
-            />
-            <label htmlFor="female">Female</label>
+            <div>
+              <input
+                type="radio"
+                id="male"
+                name="gender"
+                value="male"
+                onChange={handleChange}
+              />
+              <label htmlFor="male">Male</label>
+            </div>
+            <div>
+              <input
+                type="radio"
+                id="female"
+                name="gender"
+                value="female"
+                onChange={handleChange}
+              />
+              <label htmlFor="female">Female</label>
+            </div>
           </div>
           <p className="text-red-500">{error.gender}</p>
         </div>
-        <div>
-          <p>Language</p>
+        <div className="w-[90%] py-1 flex mx-auto">
+          <p className="w-[30%] my-auto">Language</p>
           <div
-            className={`border-2  ${
-              error.gender ? "border-red-500" : "border-gray-500"
-            } `}
+            className={` w-[70%] flex justify-center   ${error.gender ? "border-2 border-red-500" : "border-gray-500"
+              } `}
           >
             <input
               className="hidden"
@@ -227,7 +225,7 @@ const Profile = () => {
               value="english"
               onChange={handleChange}
             />
-            <label htmlFor="english" className="">
+            <label htmlFor="english" className={`${form.language === "english" ? "bg-[#525298] text-white" : ""} w-[40%] text-center cursor-pointer`}>
               English
             </label>
             <input
@@ -238,26 +236,26 @@ const Profile = () => {
               value="hindi"
               onChange={handleChange}
             />
-            <label htmlFor="hindi">Hindi</label>
+            <label htmlFor="hindi" className={`${form.language === "hindi" ? "bg-[#525298] text-white" : ""} w-[40%] text-center cursor-pointer`}>Hindi</label>
           </div>
           <p className="text-red-500">{error.language}</p>
         </div>
-        <div>
-          <p>Marital Status</p>
+        <div className=" w-[90%] mx-auto py-1">
+          <p className="w-[30%]">Marital Status</p>
           <select
             name="maritalStatus"
             value={form.maritalStatus}
             onChange={handleChange}
+            className="w-[100%] p-3 border-2"
           >
             <option value="married">Married</option>
             <option value="unmarried">Unmarried</option>
             <option value="others">Others</option>
           </select>
         </div>
-        <div>
+        <div className="w-[90%] mx-auto">
           <p>Date Of Birth</p>
-          <div className={`border-2  ${
-              error.dateOfBirth ? "border-red-500" : "border-gray-500"
+          <div className={` flex justify-around   
             } `}>
             <input
               type="number"
@@ -265,6 +263,7 @@ const Profile = () => {
               min="1"
               name="day"
               placeholder="DD"
+              className="border-2 p-1"
               onChange={handleChangeDate}
             />
             <input
@@ -273,6 +272,7 @@ const Profile = () => {
               min="1"
               name="month"
               placeholder="MM"
+              className="border-2 p-1"
               onChange={handleChangeDate}
             />
             <input
@@ -281,30 +281,31 @@ const Profile = () => {
               name="year"
               onChange={handleChangeDate}
               placeholder="YYYY"
+              className="border-2 p-1"
               min="1900"
             />
           </div>
           <p className="text-red-500">{error.dateOfBirth}</p>
         </div>
-        <div>
-          <input className={`border-2  ${
-              error.timeOfBirth ? "border-red-500" : "border-gray-500"
+        <div className="w-[90%] mx-auto">
+          <p>Time of birth</p>
+          <input className={`border-2 w-[100%]  ${error.timeOfBirth ? "border-red-500" : "border-gray-500"
             } `} type="time" name="timeOfBirth" onChange={handleChange} />
-            <p className="text-red-500">{error.timeOfBirth}</p>
+          <p className="text-red-500">{error.timeOfBirth}</p>
         </div>
-        <div>
+        <div className="w-[90%] mx-auto flex">
           <input
             type="checkbox"
             name="tnc"
+            className="my-auto mx-2"
             value={tnc}
             onChange={(e) => setTnc(e.target.checked)}
           />
           <p>I accept the terms and conditions</p>
         </div>
         <button
-          className={`w-[90%] h-[50px] bg-violet-500 text-white ${
-            tnc ? "" : "!bg-gray-400"
-          }`}
+          className={`w-[90%] block my-5 mx-auto h-[50px] bg-violet-500 text-white ${tnc ? "" : "!bg-gray-400"
+            }`}
           onClick={onSubmit}
         >
           Save

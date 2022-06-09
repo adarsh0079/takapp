@@ -1,14 +1,317 @@
-import React from 'react'
-
+import React from "react";
+import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
 const Profile = () => {
-  return (
-    <div>
-        <div>
-            <p>go to home</p>
-            <p>User profile</p>
-        </div>
-    </div>
-  )
-}
+  const [form, setForm] = useState({
+    userName: "",
+    email: "",
+    image: "",
+    password: "",
+    countryCode: "",
+    phoneNumber: "",
+    gender: "",
+    language: "",
+    maritalStatus: "married",
+    dateOfBirth: "",
+    timeOfBirth: "",
+  });
+  const [date, setDate] = useState({
+    day: "",
+    month: "",
+    year: "",
+  });
+  const [error, setError] = useState({
+    userName: "",
+    email: "",
+    image: "",
+    password: "",
+    countryCode: "",
+    phoneNumber: "",
+    gender: "",
+    language: "",
+    maritalStatus: "",
+    dateOfBirth: "",
+    timeOfBirth: "",
+  });
+  const [tnc, setTnc] = useState(false);
 
-export default Profile
+  const handleChange = (e) => {
+    console.log(error);
+    setForm({ ...form, [e.target.name]: e.target.value });
+    console.log({ ...form, [e.target.name]: e.target.value });
+  };
+  const validateForm = () => {
+    let errorObject = {};
+    if (form.userName.length == 0) {
+      errorObject.userName = "*Field is mandatory";
+    } else {
+      errorObject.userName = "";
+    }
+    if (form.email == "") {
+      errorObject.email = "*Field is mandatory";
+    } else if (
+      !/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(form.email)
+    ) {
+      errorObject.email = "*Please enter a valid E-mail id i.e abcd@gmail.com";
+    } else {
+      errorObject.email = "";
+    }
+    if (form.password === "") {
+      errorObject.password = "*Field is mandatory";
+    } else if (form.password.length < 8) {
+      errorObject.password = "Should be minimum 8 characters";
+    } else {
+      errorObject.password = "";
+    }
+    if (form.phoneNumber === "") {
+      errorObject.phoneNumber = "*Field is mandatory";
+    } else if (form.phoneNumber.length < 10) {
+      errorObject.phoneNumber = "Invalid Phone number";
+    } else {
+      errorObject.phoneNumber = "";
+    }
+    if (form.dateOfBirth === "") {
+      errorObject.dateOfBirth = "*Field is mandatory";
+    } else {
+      errorObject.dateOfBirth = "";
+    }
+    if (form.timeOfBirth === "") {
+      errorObject.timeOfBirth = "*Field is mandatory";
+    } else {
+      errorObject.timeOfBirth = "";
+    }
+    if (form.gender == "") {
+      errorObject.gender = "*Field is mandatory";
+    } else {
+      errorObject.gender = "";
+    }
+    if (form.language == "") {
+      errorObject.language = "*Field is mandatory";
+    } else {
+      errorObject.language = "";
+    }
+    if (!date.day || !date.month || !date.year) {
+      errorObject.dateOfBirth = "*Field is mandatory";
+    } else {
+      errorObject.dateOfBirth = "";
+    }
+    if(form.timeOfBirth===""){
+      errorObject.timeOfBirth= "*Field is mandatory";
+    }else{
+      errorObject.timeOfBirth=""
+    }
+    setError(errorObject);
+  };
+  const handleChangeDate = (e) => {
+    setDate({ ...date, [e.target.name]: e.target.value });
+  };
+  const onSubmit = () => {
+    if (!tnc) return;
+    validateForm();
+  };
+  return (
+    <div className="w-[375px]  h-[800px] mx-auto border-2 relative">
+      <div className="bg-gray-100 p-3">
+        <div className="w-[60%] flex justify-between  ">
+          <p className="text-xs my-auto">
+            <Link to="/">go to home</Link>
+          </p>
+          <p className="text-2xl">User profile</p>
+        </div>
+      </div>
+      <div>
+        {/* user name,email,password,countryCode,phoneNumber,gender,language,maritalStatus,dateOfBirth,timeOfBirth { hours,minutes,seconds} */}
+        <div className="flex ">
+          <div>
+            <p>Username</p>
+            <input
+              type="text"
+              name="userName"
+              placeholder="Enter name here"
+              onChange={handleChange}
+              className={`border-2  ${
+                error.userName ? "border-red-500" : "border-gray-500"
+              } `}
+            />
+            <p className="text-red-500">{error.userName}</p>
+          </div>
+
+          <div>
+            {/* <UploadIcon/> */}
+            <p>upload</p>
+            <img src="" type="" />
+          </div>
+        </div>
+        <div>
+          <p>Email</p>
+          <input
+            type="email"
+            name="email"
+            placeholder="Your email ID"
+            onChange={handleChange}
+            className={`border-2  ${
+              error.email ? "border-red-500" : "border-gray-500"
+            } `}
+          />
+          <p className="text-red-500">{error.email}</p>
+        </div>
+        <div>
+          <p>Password</p>
+          <input
+            type="password"
+            minLength="8"
+            name="password"
+            placeholder="Min 8 char"
+            onChange={handleChange}
+            className={`border-2  ${
+              error.password ? "border-red-500" : "border-gray-500"
+            } `}
+          />
+          <p className="text-red-500">{error.password}</p>
+        </div>
+        <div>
+          <p>Phone Number</p>
+          <select name="countryCode" onChange={handleChange}>
+            <option value="+91">+91</option>
+            <option value="+1">+1</option>
+          </select>
+          <input
+            type="text"
+            placeholder="Enter mobile no"
+            name="phoneNumber"
+            onChange={handleChange}
+            className={`border-2  ${
+              error.phoneNumber ? "border-red-500" : "border-gray-500"
+            } `}
+          />
+          <p className="text-red-500">{error.password}</p>
+        </div>
+        <div>
+          <p>Gender</p>
+          <div
+            className={`border-2  ${
+              error.gender ? "border-red-500" : "border-gray-500"
+            } `}
+          >
+            <input
+              type="radio"
+              id="male"
+              name="gender"
+              value="male"
+              onChange={handleChange}
+            />
+            <label htmlFor="male">Male</label>
+            <input
+              type="radio"
+              id="female"
+              name="gender"
+              value="female"
+              onChange={handleChange}
+            />
+            <label htmlFor="female">Female</label>
+          </div>
+          <p className="text-red-500">{error.gender}</p>
+        </div>
+        <div>
+          <p>Language</p>
+          <div
+            className={`border-2  ${
+              error.gender ? "border-red-500" : "border-gray-500"
+            } `}
+          >
+            <input
+              className="hidden"
+              type="radio"
+              id="english"
+              name="language"
+              value="english"
+              onChange={handleChange}
+            />
+            <label htmlFor="english" className="">
+              English
+            </label>
+            <input
+              className="hidden"
+              type="radio"
+              id="hindi"
+              name="language"
+              value="hindi"
+              onChange={handleChange}
+            />
+            <label htmlFor="hindi">Hindi</label>
+          </div>
+          <p className="text-red-500">{error.language}</p>
+        </div>
+        <div>
+          <p>Marital Status</p>
+          <select
+            name="maritalStatus"
+            value={form.maritalStatus}
+            onChange={handleChange}
+          >
+            <option value="married">Married</option>
+            <option value="unmarried">Unmarried</option>
+            <option value="others">Others</option>
+          </select>
+        </div>
+        <div>
+          <p>Date Of Birth</p>
+          <div className={`border-2  ${
+              error.dateOfBirth ? "border-red-500" : "border-gray-500"
+            } `}>
+            <input
+              type="number"
+              max="31"
+              min="1"
+              name="day"
+              placeholder="DD"
+              onChange={handleChangeDate}
+            />
+            <input
+              type="number"
+              max="12"
+              min="1"
+              name="month"
+              placeholder="MM"
+              onChange={handleChangeDate}
+            />
+            <input
+              type="number"
+              max={new Date().getFullYear()}
+              name="year"
+              onChange={handleChangeDate}
+              placeholder="YYYY"
+              min="1900"
+            />
+          </div>
+          <p className="text-red-500">{error.dateOfBirth}</p>
+        </div>
+        <div>
+          <input className={`border-2  ${
+              error.timeOfBirth ? "border-red-500" : "border-gray-500"
+            } `} type="time" name="timeOfBirth" onChange={handleChange} />
+            <p className="text-red-500">{error.timeOfBirth}</p>
+        </div>
+        <div>
+          <input
+            type="checkbox"
+            name="tnc"
+            value={tnc}
+            onChange={(e) => setTnc(e.target.checked)}
+          />
+          <p>I accept the terms and conditions</p>
+        </div>
+        <button
+          className={`w-[90%] h-[50px] bg-violet-500 text-white ${
+            tnc ? "" : "!bg-gray-400"
+          }`}
+          onClick={onSubmit}
+        >
+          Save
+        </button>
+      </div>
+    </div>
+  );
+};
+
+export default Profile;

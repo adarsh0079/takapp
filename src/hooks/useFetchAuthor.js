@@ -7,10 +7,13 @@ const useFetchAuthor = () => {
   useEffect(() => {
     (async () => {
       try {
-        let authors = await axios.get("/authors");
+        let response = await axios.get("/authors");
+        console.log(response)
+        setAuthors(response.data.authors)
       } catch (err) {}
     })();
-  });
+  },[]);
 
   return authors;
 };
+export default useFetchAuthor

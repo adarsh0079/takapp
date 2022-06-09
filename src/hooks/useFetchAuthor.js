@@ -7,12 +7,18 @@ const useFetchAuthor = () => {
   useEffect(() => {
     (async () => {
       try {
-        let response = await axios.get("/authors");
-        console.log(response)
+        let response
+        if (process.env.REACT_APP_NODE_ENV == "prod") {
+          response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/authors`)
+        } else {
+          response = await axios.get("/authors");
+          console.log(response)
+
+        }
         setAuthors(response.data.authors)
-      } catch (err) {}
+      } catch (err) { }
     })();
-  },[]);
+  }, []);
 
   return authors;
 };

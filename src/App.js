@@ -118,7 +118,12 @@ function App() {
     (async () => {
       try {
         setLoading(true);
-        let res = await axios.post("article/get-filtered", filterObj);
+
+        if (process.env.REACT_APP_NODE_ENV == "prod") {
+          var res = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/article/get-filtered`)
+        } else {
+          var res = await axios.post("article/get-filtered", filterObj);
+        }
         setArticles(res.data.articles);
         setLoading(false);
       } catch (err) {

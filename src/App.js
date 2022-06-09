@@ -120,7 +120,7 @@ function App() {
         setLoading(true);
         console.log(process.env.NODE_ENV)
         if (process.env.NODE_ENV == "production") {
-          var res = await axios.post(`https://takappbackend.herokuapp.com/article/get-filtered`)
+          var res = await axios.post(`https://takappbackend.herokuapp.com/article/get-filtered`, filterObj)
         } else {
           var res = await axios.post("article/get-filtered", filterObj);
         }

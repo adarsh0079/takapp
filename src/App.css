@@ -1,3 +1,11 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+.password-field{
+    position: relative;
+}
+.password-field svg{
+    position: absolute;
+    top: 15px ;
+    right: 10px;
+}

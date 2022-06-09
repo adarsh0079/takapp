@@ -8,12 +8,10 @@ const useFetchAuthor = () => {
     (async () => {
       try {
         let response
-        if (process.env.REACT_APP_NODE_ENV == "prod") {
-          response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/authors`)
+        if (process.env.NODE_ENV == "production") {
+          response = await axios.get(`https://takappbackend.herokuapp.com/authors`)
         } else {
           response = await axios.get("/authors");
-          console.log(response)
-
         }
         setAuthors(response.data.authors)
       } catch (err) { }

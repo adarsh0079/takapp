@@ -118,9 +118,9 @@ function App() {
     (async () => {
       try {
         setLoading(true);
-
-        if (process.env.REACT_APP_NODE_ENV == "prod") {
-          var res = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/article/get-filtered`)
+        console.log(process.env.NODE_ENV)
+        if (process.env.NODE_ENV == "production") {
+          var res = await axios.get(`https://takappbackend.herokuapp.com/article/get-filtered`)
         } else {
           var res = await axios.post("article/get-filtered", filterObj);
         }
@@ -212,7 +212,7 @@ function App() {
           <div className="w-[60%] border-2">
             {viewmode === viewMode.tech && (
               <>
-                {techs.map((tech) => (
+                {techs?.map((tech) => (
                   <div key={tech._id}>
                     <input
                       id={tech.technology}
@@ -237,7 +237,7 @@ function App() {
             )}
             {viewmode === viewMode.author && (
               <>
-                {authors.map((author) => (
+                {authors?.map((author) => (
                   <div key={author._id}>
                     <input
                       id={author.author}

@@ -88,18 +88,18 @@ const Profile = ({ setMessage }) => {
     }
     if (form.phoneNumber === "") {
       errorObject.phoneNumber = "*Field is mandatory";
-
       validated = false;
     } else if (
-      form.phoneNumber.length != 10 &&
-      form.phoneNumber.match(/^[0-9]{10}$/)
+      form.phoneNumber.match(/^[0-9]{10}$/) === null
     ) {
       errorObject.phoneNumber = "Invalid Phone number";
       validated = false;
     } else {
+      console.log(form.phoneNumber.match(/^[0-9]{9}$/));
       errorObject.phoneNumber = "";
     }
     if (form.dateOfBirth === "") {
+      
       errorObject.dateOfBirth = "*Field is mandatory";
       validated = false;
     } else {

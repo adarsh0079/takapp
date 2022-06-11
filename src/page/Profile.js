@@ -437,7 +437,7 @@ const Profile = ({ setMessage }) => {
         <div className="w-[90%] mx-auto">
           <p>Date Of Birth</p>
           <div
-            className={` flex justify-around   
+            className={` flex justify-around 
             } `}
           >
             <input
@@ -446,7 +446,7 @@ const Profile = ({ setMessage }) => {
               min="1"
               name="day"
               placeholder="DD"
-              className="border-2 p-1 rounded-2xl"
+              className="border-2 p-1 w-[30%] rounded-2xl"
               onChange={handleChangeDate}
             />
             <input
@@ -455,7 +455,7 @@ const Profile = ({ setMessage }) => {
               min="1"
               name="month"
               placeholder="MM"
-              className="border-2 p-1 rounded-2xl"
+              className="border-2 p-1 w-[30%] rounded-2xl"
               onChange={handleChangeDate}
             />
             <input
@@ -464,7 +464,7 @@ const Profile = ({ setMessage }) => {
               name="year"
               onChange={handleChangeDate}
               placeholder="YYYY"
-              className="border-2 p-1 rounded-2xl"
+              className="border-2 p-1 w-[30%] rounded-2xl"
               min="1900"
             />
           </div>

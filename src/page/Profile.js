@@ -90,7 +90,10 @@ const Profile = ({ setMessage }) => {
       errorObject.phoneNumber = "*Field is mandatory";
 
       validated = false;
-    } else if (form.phoneNumber.length != 10) {
+    } else if (
+      form.phoneNumber.length != 10 &&
+      form.phoneNumber.match(/^[0-9]{10}$/)
+    ) {
       errorObject.phoneNumber = "Invalid Phone number";
       validated = false;
     } else {
@@ -159,7 +162,14 @@ const Profile = ({ setMessage }) => {
         data
       );
       let object = { ...form, profilePic: response.data.url };
-      response = await axios.post("user", object);
+      if (process.env.NODE_ENV == "production") {
+        response = await axios.post(
+          "https://takappbackend.herokuapp.com/user",
+          object
+        );
+      } else {
+        response = await axios.post("user", object);
+      }
       setMessage({ statusCode: 200, text: response.data.message });
       navigate("/");
     } catch (err) {

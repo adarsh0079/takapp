@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import moment from "moment";
 const Profile = ({ setMessage }) => {
   const navigate = useNavigate();
   const [passwordType, setPasswordType] = useState("password");
@@ -21,9 +22,9 @@ const Profile = ({ setMessage }) => {
     password: "",
     countryCode: "+91",
     phoneNumber: "",
-    gender: "",
+    gender: "male",
     language: "english",
-    maritalStatus: "married",
+    maritalStatus: "",
     dateOfBirth: null,
     timeOfBirth: "",
   });
@@ -32,6 +33,7 @@ const Profile = ({ setMessage }) => {
     month: "",
     year: "",
   });
+  const [chooseTime, setChooseTime] = useState("text");
   const [error, setError] = useState({
     userName: "",
     email: "",
@@ -89,9 +91,7 @@ const Profile = ({ setMessage }) => {
     if (form.phoneNumber === "") {
       errorObject.phoneNumber = "*Field is mandatory";
       validated = false;
-    } else if (
-      form.phoneNumber.match(/^[0-9]{10}$/) === null
-    ) {
+    } else if (form.phoneNumber.match(/^[0-9]{10}$/) === null) {
       errorObject.phoneNumber = "Invalid Phone number";
       validated = false;
     } else {
@@ -99,7 +99,6 @@ const Profile = ({ setMessage }) => {
       errorObject.phoneNumber = "";
     }
     if (form.dateOfBirth === "") {
-      
       errorObject.dateOfBirth = "*Field is mandatory";
       validated = false;
     } else {
@@ -126,6 +125,15 @@ const Profile = ({ setMessage }) => {
     if (!date.day || !date.month || !date.year) {
       errorObject.dateOfBirth = "*Field is mandatory";
       validated = false;
+    } else if (
+      !moment(
+        `${date.day}/${date.month}/${date.year}`,
+        "DD/MM/YYYY",
+        true
+      ).isValid()
+    ) {
+      errorObject.dateOfBirth = "*Invalid date";
+      validated = false;
     } else {
       errorObject.dateOfBirth = "";
     }
@@ -144,6 +152,7 @@ const Profile = ({ setMessage }) => {
       ...form,
       dateOfBirth: new Date(date.year, date.month, date.day),
     });
+    console.log(new Date(date.year, date.month, date.day));
   };
   const handleFileUpload = (e) => {
     setForm({ ...form, profilePic: URL.createObjectURL(e.target.files[0]) });
@@ -179,6 +188,7 @@ const Profile = ({ setMessage }) => {
       });
     }
   };
+
   return (
     <div className="w-[375px]  h-[800px] mx-auto border-2 relative">
       <div className="bg-gray-100 p-3 h-[50px]">
@@ -215,8 +225,8 @@ const Profile = ({ setMessage }) => {
                 error.userName ? "border-red-500" : "border-gray-500"
               } `}
             />
-            <p className="text-red-500">{error.userName}</p>
-            <p className="text-red-500">{error.profilePic}</p>
+            <p className="text-red-500 text-xs">{error.userName}</p>
+            <p className="text-red-500 text-xs">{error.profilePic}</p>
           </div>
 
           <div className=" w-[40%] flex justify-center items-center ">
@@ -275,7 +285,7 @@ const Profile = ({ setMessage }) => {
               error.email ? "border-red-500" : "border-gray-500"
             } `}
           />
-          <p className="text-red-500">{error.email}</p>
+          <p className="text-red-500 text-xs">{error.email}</p>
         </div>
         <div className="py-1 mx-auto w-[90%]">
           <p>Password</p>
@@ -321,7 +331,7 @@ const Profile = ({ setMessage }) => {
               />
             </svg>
           </div>
-          <p className="text-red-500">{error.password}</p>
+          <p className="text-red-500 text-xs">{error.password}</p>
         </div>
         <div className="py-1 mx-auto w-[90%] ">
           <p>Phone Number</p>
@@ -343,7 +353,7 @@ const Profile = ({ setMessage }) => {
               error.phoneNumber ? "border-red-500" : "border-gray-500"
             } `}
           />
-          <p className="text-red-500">{error.phoneNumber}</p>
+          <p className="text-red-500 text-xs">{error.phoneNumber}</p>
         </div>
         <div className="py-1 flex w-[90%] mx-auto">
           <p className="w-[30%] my-auto">Gender</p>
@@ -352,28 +362,88 @@ const Profile = ({ setMessage }) => {
               error.gender ? "border-2 border-red-500" : "border-gray-500"
             } `}
           >
-            <div>
+            <div className="w-[50%]  flex items-center justify-around">
               <input
                 type="radio"
                 id="male"
                 name="gender"
                 value="male"
                 onChange={handleChange}
+                className="hidden"
               />
-              <label htmlFor="male">Male</label>
+              <label htmlFor="male" className="w-[70%]">
+                <div className="flex  justify-around items-center">
+                  <svg
+                    width="20"
+                    height="20"
+                    viewBox="0 0 20 20"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                    className={`${
+                      form.gender == "male" ? "visible" : "hidden"
+                    }`}
+                  >
+                    <circle
+                      cx="10"
+                      cy="10"
+                      r="7"
+                      stroke="#525298"
+                      stroke-width="6"
+                    />
+                  </svg>
+                  <div
+                    className={`${
+                      form.gender == "female"
+                        ? " w-[20px] border-2 h-[20px] rounded-[100%]"
+                        : ""
+                    }`}
+                  ></div>
+                  <p>Male</p>
+                </div>
+              </label>
             </div>
-            <div>
+            <div className="w-[50%] flex items-center justify-around">
               <input
                 type="radio"
                 id="female"
                 name="gender"
                 value="female"
                 onChange={handleChange}
+                className="hidden"
               />
-              <label htmlFor="female">Female</label>
+              <label htmlFor="female" className="w-[100%]">
+                <div className="flex items-center  justify-around">
+                  <svg
+                    width="20"
+                    height="20"
+                    viewBox="0 0 20 20"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                    className={`${
+                      form.gender == "female" ? "visible" : "hidden"
+                    }`}
+                  >
+                    <circle
+                      cx="10"
+                      cy="10"
+                      r="7"
+                      stroke="#525298"
+                      stroke-width="6"
+                    />
+                  </svg>
+                  <div
+                    className={`${
+                      form.gender != "female"
+                        ? "border-2 w-[20px] h-[20px] rounded-[100%]"
+                        : ""
+                    }`}
+                  ></div>
+                  <p>Female</p>
+                </div>
+              </label>
             </div>
           </div>
-          <p className="text-red-500">{error.gender}</p>
+          <p className="text-red-500 text-xs">{error.gender}</p>
         </div>
         <div className="w-[90%] py-1 flex mx-auto">
           <p className="w-[30%] my-auto">Language</p>
@@ -421,20 +491,22 @@ const Profile = ({ setMessage }) => {
           </div>
           <p className="text-red-500">{error.language}</p>
         </div>
-        <div className=" w-[90%] mx-auto py-1">
-          <p className="w-[30%]">Marital Status</p>
+        <div className=" w-[90%] mx-auto mt-4">
+          <p className="">Marital Status</p>
           <select
             name="maritalStatus"
-            value={form.maritalStatus}
             onChange={handleChange}
             className="w-[100%] rounded-2xl p-3 border-2"
           >
+            <option disabled selected value>
+              -- select an option --
+            </option>
             <option value="married">Married</option>
             <option value="unmarried">Unmarried</option>
             <option value="others">Others</option>
           </select>
         </div>
-        <div className="w-[90%] mx-auto">
+        <div className="w-[90%] mx-auto py-2">
           <p>Date Of Birth</p>
           <div
             className={` flex justify-around 
@@ -446,7 +518,7 @@ const Profile = ({ setMessage }) => {
               min="1"
               name="day"
               placeholder="DD"
-              className="border-2 p-1 w-[30%] rounded-2xl"
+              className="border-2 p-2 w-[30%] rounded-2xl"
               onChange={handleChangeDate}
             />
             <input
@@ -455,7 +527,7 @@ const Profile = ({ setMessage }) => {
               min="1"
               name="month"
               placeholder="MM"
-              className="border-2 p-1 w-[30%] rounded-2xl"
+              className="border-2 p-2 w-[30%] rounded-2xl"
               onChange={handleChangeDate}
             />
             <input
@@ -464,36 +536,78 @@ const Profile = ({ setMessage }) => {
               name="year"
               onChange={handleChangeDate}
               placeholder="YYYY"
-              className="border-2 p-1 w-[30%] rounded-2xl"
+              className="border-2 p-2 w-[30%] rounded-2xl"
               min="1900"
             />
           </div>
-          <p className="text-red-500">{error.dateOfBirth}</p>
+          <p className="text-red-500 text-xs">{error.dateOfBirth}</p>
         </div>
-        <div className="w-[90%] mx-auto">
-          <p>Time of birth</p>
+
+        <div className="w-[90%] mx-auto py-3">
+          <p>Time of Birth</p>
+
           <input
-            className={`border-2 w-[100%]  rounded-2xl ${
+            className={`border-2 w-[100%] p-2 rounded-2xl ${
               error.timeOfBirth ? "border-red-500" : "border-gray-500"
             } `}
-            type="time"
+            type={chooseTime}
+            id="time"
+            onFocus={() => {
+              setChooseTime("time");
+            }}
+            onBlur={() => {
+              setChooseTime("text");
+            }}
+            placeholder="Choose Time"
             name="timeOfBirth"
+            value={form.timeOfBirth}
             onChange={handleChange}
           />
-          <p className="text-red-500">{error.timeOfBirth}</p>
+          <p className="text-red-500 text-xs">{error.timeOfBirth}</p>
         </div>
         <div className="w-[90%] mx-auto flex mt-5">
           <input
             type="checkbox"
             name="tnc"
-            className="my-auto mx-2"
+            className={`my-auto mx-2 hidden `}
             value={tnc}
             onChange={(e) => setTnc(e.target.checked)}
+            id="tnc"
           />
-          <p>I accept the terms and conditions</p>
+          <label htmlFor="tnc" className="relative">
+            <svg
+              width="22"
+              height="22"
+              viewBox="0 0 22 22"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              className={`${!tnc ? "border-4 rounded-full" : ""}`}
+            >
+              <path
+                d="M11 22C17.0751 22 22 17.0751 22 11C22 4.92487 17.0751 0 11 0C4.92487 0 0 4.92487 0 11C0 17.0751 4.92487 22 11 22Z"
+                fill={`${!tnc ? "#FFFFFF" : "#525298"}`}
+              />
+            </svg>
+            <svg
+              width="10"
+              height="8"
+              viewBox="0 0 10 8"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              className={`absolute left-[18.75%] right-[18.75%] top-[28%] ${
+                tnc ? "visible" : "hidden"
+              }`}
+            >
+              <path
+                d="M8.49373 0.758435C8.83831 0.413855 9.39698 0.413855 9.74156 0.758435C10.0861 1.10302 10.0861 1.66169 9.74156 2.00627L4.44745 7.30039C4.10287 7.64497 3.54419 7.64497 3.19961 7.30039L0.258435 4.35921C-0.0861451 4.01463 -0.0861451 3.45596 0.258435 3.11138C0.603015 2.7668 1.16169 2.7668 1.50627 3.11138L3.82353 5.42863L8.49373 0.758435Z"
+                fill="white"
+              />
+            </svg>
+          </label>
+          <p className="ml-2">I accept the terms and conditions</p>
         </div>
         <button
-          className={`w-[90%] block mt-5 mx-auto h-[50px] bg-violet-500 rounded-tl-lg rounded-tr-lg rounded-br-lg text-white ${
+          className={`w-[90%] mb-[20px] block mt-5 mx-auto h-[50px] bg-violet-500 rounded-tl-lg rounded-tr-lg rounded-br-lg text-white ${
             tnc ? "" : "!bg-gray-400 "
           }`}
           onClick={onSubmit}

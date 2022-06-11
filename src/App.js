@@ -1,10 +1,13 @@
 import logo from "./logo.svg";
 import "./App.css";
-import { useEffect, useState, useRef, Fragment } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import useFetchTech from "./hooks/useFetchTech";
 import useFetchAuthor from "./hooks/useFetchAuthor";
+import NewsCard from "./components/NewsCard";
+import { ReactComponent as Loading } from './assets/Loading.svg'
+import { ReactComponent as Profile } from './assets/Profile.svg'
 const mode = {
   apply: "apply",
   reset: "reset",
@@ -14,17 +17,34 @@ const viewMode = {
   author: "author",
 };
 function App() {
+  const navigate = useNavigate();
+
+
   const [articles, setArticles] = useState([]);
-  const [viewFilerOptions, setViewFilterOptions] = useState(false);
-  const [viewSortBy, setViewSortBy] = useState(false);
   const [loading, setLoading] = useState(false);
   const [err, setErr] = useState(null);
 
-  const [techsFilter, setTechsFilter] = useState([]);
-  const [viewmode, setViewMode] = useState(viewMode.tech);
-  const techs = useFetchTech();
 
+  const [viewFilerOptions, setViewFilterOptions] = useState(false);
+  const [viewSortBy, setViewSortBy] = useState(false);
+
+  const techs = useFetchTech();
   const authors = useFetchAuthor();
+
+  const [filterObj, setFilterObj] = useState({
+    searchText: "",
+    technologies: [],
+    authors: [],
+    sortBy: 1,
+  });
+
+  const handleChangeText = (e) => {
+    setFilterObj((prev) => {
+      return { ...prev, searchText: e.target.value };
+    });
+  };
+
+
   const [authorFilter, setAuthorFilter] = useState([]);
   const handleAuthorFilterChange = (e) => {
     if (e.target.checked === false) {
@@ -54,18 +74,10 @@ function App() {
       setAuthorFilter([]);
     }
   };
-  const navigate = useNavigate();
-  const [filterObj, setFilterObj] = useState({
-    searchText: "",
-    technologies: [],
-    authors: [],
-    sortBy: -1,
-  });
-  const handleChangeText = (e) => {
-    setFilterObj((prev) => {
-      return { ...prev, searchText: e.target.value };
-    });
-  };
+
+
+  const [viewmode, setViewMode] = useState(viewMode.tech);
+  const [techsFilter, setTechsFilter] = useState([]);
   const handleTechFilterObjChange = (option) => {
     if (option == mode.apply) {
       console.log("inside ");
@@ -94,30 +106,12 @@ function App() {
       });
     }
   };
-  const timeAgo = (timeInPast) => {
-    let res = "";
-    //converting seconds to days
-    let totalseconds = (new Date() - new Date(timeInPast)) / 1000;
 
-    let days = Math.floor(totalseconds / (3600 * 24));
-    let hours = Math.floor((totalseconds % (3600 * 24)) / 3600);
-    let minutes = Math.floor((totalseconds % 3600) / 60);
-    let seconds = Math.floor(totalseconds % 60);
-    if (days > 0) {
-      res = `${days} d`;
-    } else if (hours > 0) {
-      res = `${hours} h`;
-    } else if (minutes > 0) {
-      res = `${minutes} m`;
-    } else {
-      res = `${seconds} s`;
-    }
-    return res;
-  };
   useEffect(() => {
     (async () => {
       try {
         setLoading(true);
+        setArticles([])
         console.log(process.env.NODE_ENV)
         if (process.env.NODE_ENV == "production") {
           var res = await axios.post(`https://takappbackend.herokuapp.com/article/get-filtered`, filterObj)
@@ -131,15 +125,15 @@ function App() {
         setErr(err.response.msg);
       }
     })();
+
   }, [filterObj]);
 
   return (
     <div className="w-[375px] p-3 h-[800px] mx-auto border-2 relative">
       <div className="flex justify-between">
-        <div className="flex-container">
-
-          <p className=" font-bold text-2xl cursor-pointer" onClick={() => navigate("/profile")}>
-
+        <div className="flex-container cursor-pointer">
+          <div className="px-1  rounded-[100%] bg-blue-100"><Profile /></div>
+          <p className=" font-bold text-2xl " onClick={() => navigate("/profile")}>
             Hi User
           </p>
         </div>
@@ -186,35 +180,10 @@ function App() {
           </p>
         </div>
       </div>
-      <div>
+      <div className="h-[700px] overflow-auto">
+        {loading && <Loading />}
         {articles?.map((article) => {
-          return (
-            <Fragment>
-              <div key={article._id} className="h-[130px]  flex  p-3">
-                <img className="w-[40%] block rounded-2xl" src={article.image} />
-                <div className="w-[60%]  h-[100%] px-1">
-                  <div>
-                    <div className="flex-container-tech">
-                      <p>{article.technology}</p>
-                      <svg width="3" height="3" viewBox="0 0 3 3" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <circle cx="1.5" cy="1.5" r="1.5" fill="#C4C4C4" />
-                      </svg>
-
-                      <p className="margin-left">{timeAgo(article.updatedAt)} ago</p>
-                    </div>
-                  </div>
-                  <div>
-                    <p className="para text-xs">"{article.title}"</p>
-                    <small>by <span>{article.author}</span></small>
-                  </div>
-                </div>
-              </div>
-              <hr />
-            </Fragment>
-
-
-
-          );
+          return <NewsCard article={article} />
         })}
       </div>
 
@@ -222,28 +191,32 @@ function App() {
         className={`${viewFilerOptions ? "visible" : "hidden"
           } h-[400px] w-[300px] border-2 rounded-3xl p-3 bg-white absolute top-[100px] left-[37.5px]`}
       >
-        <div className="h-[50px] flex justify-between">
-          <p>Filter By</p>
+        <div className="h-[35px] flex justify-between">
+          <p className="text-[#525298]">Filter By</p>
           <p
             onClick={() => {
               setViewFilterOptions(false);
             }}
             className="cursor-pointer"
           >
-            Close
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M10.4099 9.00019L16.7099 2.71019C16.8982 2.52188 17.004 2.26649 17.004 2.00019C17.004 1.73388 16.8982 1.47849 16.7099 1.29019C16.5216 1.10188 16.2662 0.996094 15.9999 0.996094C15.7336 0.996094 15.4782 1.10188 15.2899 1.29019L8.99994 7.59019L2.70994 1.29019C2.52164 1.10188 2.26624 0.996094 1.99994 0.996094C1.73364 0.996094 1.47824 1.10188 1.28994 1.29019C1.10164 1.47849 0.995847 1.73388 0.995847 2.00019C0.995847 2.26649 1.10164 2.52188 1.28994 2.71019L7.58994 9.00019L1.28994 15.2902C1.19621 15.3831 1.12182 15.4937 1.07105 15.6156C1.02028 15.7375 0.994141 15.8682 0.994141 16.0002C0.994141 16.1322 1.02028 16.2629 1.07105 16.3848C1.12182 16.5066 1.19621 16.6172 1.28994 16.7102C1.3829 16.8039 1.4935 16.8783 1.61536 16.9291C1.73722 16.9798 1.86793 17.006 1.99994 17.006C2.13195 17.006 2.26266 16.9798 2.38452 16.9291C2.50638 16.8783 2.61698 16.8039 2.70994 16.7102L8.99994 10.4102L15.2899 16.7102C15.3829 16.8039 15.4935 16.8783 15.6154 16.9291C15.7372 16.9798 15.8679 17.006 15.9999 17.006C16.132 17.006 16.2627 16.9798 16.3845 16.9291C16.5064 16.8783 16.617 16.8039 16.7099 16.7102C16.8037 16.6172 16.8781 16.5066 16.9288 16.3848C16.9796 16.2629 17.0057 16.1322 17.0057 16.0002C17.0057 15.8682 16.9796 15.7375 16.9288 15.6156C16.8781 15.4937 16.8037 15.3831 16.7099 15.2902L10.4099 9.00019Z" fill="#979797" />
+            </svg>
+
           </p>
         </div>
-        <div className="flex border-2 h-[350px]">
-          <div className="w-[40%]">
+        <hr />
+        <div className="flex h-[350px]">
+          <div className="w-[40%] tech-auth">
             <p onClick={() => setViewMode(viewMode.tech)} className={`${viewMode.tech == viewmode ? "font-bold" : ""} cursor-pointer`}>Technology</p>
             <p onClick={() => setViewMode(viewMode.author)} className={`${viewMode.author == viewmode ? "font-bold" : ""} cursor-pointer`}>Author</p>
           </div>
 
-          <div className="w-[60%] border-2">
+          <div className="w-[60%] tech-auth-menu">
             {viewmode === viewMode.tech && (
               <>
                 {techs?.map((tech) => (
-                  <div key={tech._id}>
+                  <div className="chckboxes" key={tech._id}>
                     <input
                       id={tech.technology}
                       type="checkbox"
@@ -255,20 +228,20 @@ function App() {
                   </div>
                 ))}
 
-                <div>
-                  <p onClick={() => handleTechFilterObjChange(mode.reset)}>
+                <div className="reset-apply-btns">
+                  <button className="reset" onClick={() => handleTechFilterObjChange(mode.reset)}>
                     Reset
-                  </p>
-                  <p onClick={() => handleTechFilterObjChange(mode.apply)}>
+                  </button>
+                  <button className="apply" onClick={() => handleTechFilterObjChange(mode.apply)}>
                     Apply
-                  </p>
+                  </button>
                 </div>
               </>
             )}
             {viewmode === viewMode.author && (
               <>
                 {authors?.map((author) => (
-                  <div key={author._id}>
+                  <div className="chckboxes" key={author._id}>
                     <input
                       id={author.author}
                       type="checkbox"
@@ -280,13 +253,13 @@ function App() {
                   </div>
                 ))}
 
-                <div>
-                  <p onClick={() => handleAuthorFilterObjChange(mode.reset)}>
+                <div className="reset-apply-btns">
+                  <button className="reset" onClick={() => handleAuthorFilterObjChange(mode.reset)}>
                     Reset
-                  </p>
-                  <p onClick={() => handleAuthorFilterObjChange(mode.apply)}>
+                  </button>
+                  <button className="apply" onClick={() => handleAuthorFilterObjChange(mode.apply)}>
                     Apply
-                  </p>
+                  </button>
                 </div>
               </>
             )}
@@ -295,14 +268,18 @@ function App() {
       </div>
 
 
-      <div className={`${viewSortBy ? "visible" : "hidden"} rounded-3xl p-3 h-[100px] w-[300px] border-2 bg-white absolute top-[100px] left-[37.5px]`}>
-        <div className="flex  justify-between ">
-          <p className="text-2xl">Sort By</p>
-          <p className="text-xs my-auto cursor-pointer" onClick={() => setViewSortBy(false)}>close</p>
+      <div className={`${viewSortBy ? "visible" : "hidden"} rounded-3xl p-3  w-[300px] border-2 bg-white absolute top-[100px] left-[37.5px]`}>
+        <div className="flex mb-[10px]  justify-between ">
+          <p className=" sort-by text-2xl">Sort By</p>
+          <p className="text-xs my-auto cursor-pointer" onClick={() => setViewSortBy(false)}><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M10.4099 9.00019L16.7099 2.71019C16.8982 2.52188 17.004 2.26649 17.004 2.00019C17.004 1.73388 16.8982 1.47849 16.7099 1.29019C16.5216 1.10188 16.2662 0.996094 15.9999 0.996094C15.7336 0.996094 15.4782 1.10188 15.2899 1.29019L8.99994 7.59019L2.70994 1.29019C2.52164 1.10188 2.26624 0.996094 1.99994 0.996094C1.73364 0.996094 1.47824 1.10188 1.28994 1.29019C1.10164 1.47849 0.995847 1.73388 0.995847 2.00019C0.995847 2.26649 1.10164 2.52188 1.28994 2.71019L7.58994 9.00019L1.28994 15.2902C1.19621 15.3831 1.12182 15.4937 1.07105 15.6156C1.02028 15.7375 0.994141 15.8682 0.994141 16.0002C0.994141 16.1322 1.02028 16.2629 1.07105 16.3848C1.12182 16.5066 1.19621 16.6172 1.28994 16.7102C1.3829 16.8039 1.4935 16.8783 1.61536 16.9291C1.73722 16.9798 1.86793 17.006 1.99994 17.006C2.13195 17.006 2.26266 16.9798 2.38452 16.9291C2.50638 16.8783 2.61698 16.8039 2.70994 16.7102L8.99994 10.4102L15.2899 16.7102C15.3829 16.8039 15.4935 16.8783 15.6154 16.9291C15.7372 16.9798 15.8679 17.006 15.9999 17.006C16.132 17.006 16.2627 16.9798 16.3845 16.9291C16.5064 16.8783 16.617 16.8039 16.7099 16.7102C16.8037 16.6172 16.8781 16.5066 16.9288 16.3848C16.9796 16.2629 17.0057 16.1322 17.0057 16.0002C17.0057 15.8682 16.9796 15.7375 16.9288 15.6156C16.8781 15.4937 16.8037 15.3831 16.7099 15.2902L10.4099 9.00019Z" fill="#979797" />
+          </svg>
+          </p>
         </div>
         <hr />
-        <p className={`cursor-pointer ${filterObj.sortBy === -1 ? "" : "bg-blue-500 text-white"}`} onClick={() => {
+        <p className={` sort-by-pop-up rounded-tl-lg rounded-tr-lg rounded-br-lg cursor-pointer p-2 ${filterObj.sortBy === -1 ? "bg-blue-500 !text-white" : ""}`} onClick={() => {
           setFilterObj(prev => {
+            console.log(prev)
             if (prev.sortBy === -1) {
               return { ...prev, sortBy: 1 };
             }

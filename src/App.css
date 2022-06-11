@@ -1,6 +1,9 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100&display=swap');
+
 .password-field{
     position: relative;
 }
@@ -88,4 +91,101 @@ color: #000000;
     font-size: 14px;
     line-height: 130%;
   color:   #525298;
+}
+hr{
+    opacity: 0.2;
+border: 1px solid rgba(0, 0, 0, 0.2);
+}
+.tech-auth p{
+    font-family: 'Roboto';
+    font-style: normal;
+  
+    font-size: 14px;
+    line-height: 130%;
+    /* or 18px */
+    
+    margin: 26px 0;
+    color: #000000;
+    
+}
+.tech-auth-menu{
+    background: #F3F3F8;
+
+}
+.chckboxes{
+    padding: 10px 10px;
+}
+.chckboxes label{
+    margin-left: 10px;
+}
+.reset-apply-btns{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #FFFFFF;
+border: 1px solid rgba(0, 0, 0, 0.1);
+border-radius: 5px;
+margin: 20px;
+}
+.reset-apply-btns .reset{
+display: flex;
+align-items: center;
+justify-content: center;
+font-family: 'Roboto';
+font-style: normal;
+font-weight: 400;
+font-size: 14px;
+line-height: 16px;
+display: flex;
+align-items: center;
+text-align: center;
+letter-spacing: 0.08em;
+border-radius: 5px;
+color: rgba(0, 0, 0, 0.55);
+width: 100%;
+padding: 10px;
+}
+.reset-apply-btns .apply{
+    display: flex;
+align-items: center;
+justify-content: center;
+background: #525298;
+border: 1px solid rgba(0, 0, 0, 0.1);
+border-radius: 0px 5px 5px 0px;
+font-family: 'Roboto';
+font-style: normal;
+font-weight: 400;
+font-size: 14px;
+line-height: 16px;
+display: flex;
+align-items: center;
+text-align: center;
+letter-spacing: 0.08em;
+width: 100%;
+padding: 10px;
+color: #FFFFFF;
+}
+.sort-by-pop-up{
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 130%;
+    /* or 18px */
+    margin: 20px;
+    
+    color: #727477;
+}
+.sort-by{
+    font-family: 'Roboto';
+font-style: normal;
+font-weight: 500;
+font-size: 14px;
+line-height: 14px;
+/* identical to box height, or 100% */
+
+letter-spacing: 0.3px;
+
+color: #525298;
+
 }

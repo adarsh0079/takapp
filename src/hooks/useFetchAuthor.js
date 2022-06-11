@@ -14,7 +14,9 @@ const useFetchAuthor = () => {
           response = await axios.get("/authors");
         }
         setAuthors(response.data.authors)
-      } catch (err) { }
+      } catch (err) { 
+        console.log(err)
+      }
     })();
   }, []);
 

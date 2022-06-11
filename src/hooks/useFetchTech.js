@@ -8,7 +8,6 @@ const useFetchTech = () => {
         (async () => {
             try {
                 var response
-                console.log(process.env.NODE_ENV, process.env.BACKEND_URL)
                 if (process.env.NODE_ENV == "production") {
                     response = await axios.get(`https://takappbackend.herokuapp.com/techs`)
                 } else {
@@ -16,7 +15,7 @@ const useFetchTech = () => {
                 }
                 setTechs(response.data.technology);
             } catch (err) {
-
+                console.log(err)
             }
         })()
     }, [])

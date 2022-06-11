@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import { ReactComponent as ProfilePic } from './assets/Profile.svg'
+import axios from "axios";
 const Profile = () => {
   const [passwordType, setPasswordType] = useState("password")
   const togglePassword = () => {
@@ -11,17 +12,18 @@ const Profile = () => {
       setPasswordType("text")
     }
   }
+  const [profilePicFile, setProfilePicFile] = useState(null)
   const [form, setForm] = useState({
     userName: "",
     email: "",
-    image: "",
+    profilePic: "",
     password: "",
-    countryCode: "",
+    countryCode: "+91",
     phoneNumber: "",
     gender: "",
     language: "english",
     maritalStatus: "married",
-    dateOfBirth: "",
+    dateOfBirth: null,
     timeOfBirth: "",
   });
   const [date, setDate] = useState({
@@ -45,12 +47,12 @@ const Profile = () => {
   const [tnc, setTnc] = useState(false);
 
   const handleChange = (e) => {
-    console.log(error);
     setForm({ ...form, [e.target.name]: e.target.value });
     console.log({ ...form, [e.target.name]: e.target.value });
   };
   const validateForm = () => {
     let errorObject = {}, validated = true;
+
     if (form.userName.length == 0) {
       errorObject.userName = "*Field is mandatory";
       validated = false
@@ -60,65 +62,77 @@ const Profile = () => {
     if (form.email == "") {
       errorObject.email = "*Field is mandatory";
       validated = false
+
     } else if (
       !/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(form.email)
     ) {
       errorObject.email = "*Please enter a valid E-mail id i.e abcd@gmail.com";
       validated = false
+
     } else {
       errorObject.email = "";
     }
     if (form.password === "") {
       errorObject.password = "*Field is mandatory";
       validated = false
+
     } else if (form.password.length < 8) {
       errorObject.password = "Should be minimum 8 characters";
       validated = false
+
     } else {
       errorObject.password = "";
     }
     if (form.phoneNumber === "") {
       errorObject.phoneNumber = "*Field is mandatory";
+
       validated = false
     } else if (form.phoneNumber.length < 10) {
       errorObject.phoneNumber = "Invalid Phone number";
       validated = false
+
     } else {
       errorObject.phoneNumber = "";
     }
     if (form.dateOfBirth === "") {
       errorObject.dateOfBirth = "*Field is mandatory";
       validated = false
+
     } else {
       errorObject.dateOfBirth = "";
     }
     if (form.timeOfBirth === "") {
       errorObject.timeOfBirth = "*Field is mandatory";
       validated = false
+
     } else {
       errorObject.timeOfBirth = "";
     }
     if (form.gender == "") {
       errorObject.gender = "*Field is mandatory";
       validated = false
+
     } else {
       errorObject.gender = "";
     }
     if (form.language == "") {
       errorObject.language = "*Field is mandatory";
       validated = false
+
     } else {
       errorObject.language = "";
     }
     if (!date.day || !date.month || !date.year) {
       errorObject.dateOfBirth = "*Field is mandatory";
       validated = false
+
     } else {
       errorObject.dateOfBirth = "";
     }
     if (form.timeOfBirth === "") {
       errorObject.timeOfBirth = "*Field is mandatory";
       validated = false
+
     } else {
       errorObject.timeOfBirth = ""
     }
@@ -127,14 +141,28 @@ const Profile = () => {
   };
   const handleChangeDate = (e) => {
     setDate({ ...date, [e.target.name]: e.target.value });
+    setForm({ ...form, dateOfBirth: new Date(date.year, date.month, date.day) })
   };
   const handleFileUpload = (e) => {
     setForm({ ...form, profilePic: URL.createObjectURL(e.target.files[0]) })
+    setProfilePicFile(e.target.files[0])
   }
-  const onSubmit = () => {
-    if (!tnc) return;
-    if (validateForm()) {
-
+  const onSubmit = async () => {
+    try {
+      if (!tnc) return;
+      let formValidated = validateForm();
+      console.log(formValidated)
+      if (!formValidated) return;
+      const data = new FormData();
+      data.append("file", profilePicFile);
+      data.append("upload_preset", 'ml_default');
+      let response = await axios.post('https://api.cloudinary.com/v1_1/dnag1wvx8/upload', data)
+      let object = { ...form, profilePic: response.data.url }
+     
+      response= await axios.post('user', object)
+      console.log(response)
+    } catch (err) {
+      console.log(err)
     }
 
   };
@@ -218,7 +246,7 @@ const Profile = () => {
         </div>
         <div className="py-1 mx-auto w-[90%] " >
           <p>Phone Number</p>
-          <select name="countryCode" className="w-[20%] rounded-2xl bg-gray-100 py-2" onChange={handleChange}>
+          <select name="countryCode" value={form.countryCode} className="w-[20%] rounded-2xl bg-gray-100 py-2" onChange={handleChange}>
             <option value="+91">+91</option>
             <option value="+1">+1</option>
           </select>

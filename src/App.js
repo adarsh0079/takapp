@@ -131,9 +131,9 @@ function App() {
   return (
     <div className="w-[375px] p-3 h-[800px] mx-auto border-2 relative">
       <div className="flex justify-between">
-        <div className="flex-container cursor-pointer">
+        <div className="flex-container cursor-pointer" onClick={() => navigate("/profile")}>
           <div className="px-1  rounded-[100%] bg-blue-100"><Profile /></div>
-          <p className=" font-bold text-2xl " onClick={() => navigate("/profile")}>
+          <p className=" font-bold text-2xl " >
             Hi User
           </p>
         </div>

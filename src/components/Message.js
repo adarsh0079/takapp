@@ -18,13 +18,13 @@ const Message = ({ message, setMessage }) => {
     <div
       className={`${
         text ? "visible" : "hidden"
-      } rounded-3xl text-center p-3  w-[300px] border-2 bg-white absolute top-[100px] left-[37.5px]`}
+      } rounded-3xl text-center p-3  w-[300px]  border-2 bg-white absolute top-[100px] left-[37.5px]`}
     >
-      {statusCode == 200 && <p>Congratulations!</p>}
-      {statusCode == 409 && <p>Warning!</p>}
-      {statusCode == 500 && <p>Error!</p>}
+      {statusCode == 200 && <p className="text-[#525298] ">Congratulations!</p>}
+      {statusCode == 409 && <p className="text-yellow-500 ">Warning!</p>}
+      {statusCode == 500 && <p className="text-red-500 ">Error!</p>}
       <hr />
-      <p className="p-5 font-bold">{text}</p>
+      <p className="p-5 ">{text}</p>
     </div>
   );
 };

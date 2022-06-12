@@ -160,16 +160,16 @@ const Home = () => {
               rx="7.49046"
               ry="7.49047"
               stroke="#200E32"
-              stroke-width="1.5"
-              stroke-linecap="round"
-              stroke-linejoin="round"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
             />
             <path
               d="M14.0148 14.4043L16.9515 17.3333"
               stroke="#200E32"
-              stroke-width="1.5"
-              stroke-linecap="round"
-              stroke-linejoin="round"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
             />
           </svg>
           <input
@@ -228,7 +228,7 @@ const Home = () => {
       <div className="h-[700px] overflow-auto">
         {loading && <Loading />}
         {articles?.map((article) => {
-          return <NewsCard article={article} />;
+          return <NewsCard article={article} key={article._id} />;
         })}
       </div>
 

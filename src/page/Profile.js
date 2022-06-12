@@ -55,7 +55,6 @@ const Profile = ({ setMessage }) => {
   const validateForm = () => {
     let errorObject = {},
       validated = true;
-
     if (form.userName.length == 0) {
       errorObject.userName = "*Field is mandatory";
       validated = false;
@@ -144,10 +143,10 @@ const Profile = ({ setMessage }) => {
       errorObject.timeOfBirth = "";
     }
 
-    if(form.maritalStatus==""){
-      errorObject.maritalStatus="*Field is mandatory";
-    }else{
-      errorObject.maritalStatus="";
+    if (form.maritalStatus == "") {
+      errorObject.maritalStatus = "*Field is mandatory";
+    } else {
+      errorObject.maritalStatus = "";
     }
     setError(errorObject);
     return validated;
@@ -396,7 +395,7 @@ const Profile = ({ setMessage }) => {
                       cy="10"
                       r="7"
                       stroke="#525298"
-                      stroke-width="6"
+                      strokeWidth="6"
                     />
                   </svg>
                   <div
@@ -436,7 +435,7 @@ const Profile = ({ setMessage }) => {
                       cy="10"
                       r="7"
                       stroke="#525298"
-                      stroke-width="6"
+                      strokeWidth="6"
                     />
                   </svg>
                   <div

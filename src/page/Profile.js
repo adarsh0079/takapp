@@ -197,7 +197,7 @@ const Profile = ({ setMessage }) => {
   const [hideMaritalStatus, setHideMaritalStatusValue] = useState(false);
 
   return (
-    <div className="w-[375px]  h-[800px] mx-auto border-2 relative">
+    <div className="w-[375px]  h-[800px] mx-auto relative">
       <div className="bg-gray-100 p-3 h-[50px]">
         <div className="w-[60%] flex justify-between  ">
           <p className="text-xs my-auto">

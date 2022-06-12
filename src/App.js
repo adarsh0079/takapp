@@ -1,6 +1,7 @@
 import "./App.css";
 import { Routes, Route } from "react-router-dom";
 import Home from "./page/Home";
+import {useState} from 'react'
 import Message from "./components/Message";
 import Profile from "./page/Profile";
 
@@ -10,7 +11,7 @@ function App() {
     statusCode: "",
   });
   return (
-    <div className="w-[375px] h-[800px] mx-auto border-2 relative">
+    <div className="w-[375px] h-[800px] mx-auto relative">
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/profile" element={<Profile setMessage={setMessage} />} />

@@ -131,7 +131,7 @@ const Home = () => {
   }, [filterObj]);
 
   return (
-    <div className="w-[375px] p-3 h-[800px] mx-auto border-2 relative">
+    <div className="w-[375px] p-3 h-[800px] mx-auto  relative">
       <div className="flex justify-between">
         <div
           className="flex-container cursor-pointer "

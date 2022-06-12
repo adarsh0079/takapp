@@ -143,6 +143,12 @@ const Profile = ({ setMessage }) => {
     } else {
       errorObject.timeOfBirth = "";
     }
+
+    if(form.maritalStatus==""){
+      errorObject.maritalStatus="*Field is mandatory";
+    }else{
+      errorObject.maritalStatus="";
+    }
     setError(errorObject);
     return validated;
   };
@@ -188,6 +194,8 @@ const Profile = ({ setMessage }) => {
       });
     }
   };
+
+  const [hideMaritalStatus, setHideMaritalStatusValue] = useState(false);
 
   return (
     <div className="w-[375px]  h-[800px] mx-auto border-2 relative">
@@ -493,7 +501,87 @@ const Profile = ({ setMessage }) => {
         </div>
         <div className=" w-[90%] mx-auto mt-4">
           <p className="">Marital Status</p>
-          <select
+          <div
+            className={`border-2 p-2 ${
+              error.maritalStatus ? "border-red-500" : ""
+            } rounded-2xl`}
+          >
+            <p
+              onClick={() => {
+                setHideMaritalStatusValue(true);
+              }}
+              className={`${
+                hideMaritalStatus ? "hidden" : "visible"
+              } flex justify-between cursor-pointer items-center`}
+            >
+              <span>
+                {form.maritalStatus
+                  ? form.maritalStatus.charAt(0).toUpperCase() +
+                    form.maritalStatus.slice(1)
+                  : "select an option"}
+              </span>
+              <span>
+                <svg
+                  width="9"
+                  height="15"
+                  viewBox="0 0 9 15"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M2.70852 5.20604L4.99663 2.90794L7.28473 5.20604C7.37762 5.29969 7.48813 5.37402 7.60989 5.42475C7.73164 5.47547 7.86224 5.50159 7.99414 5.50159C8.12605 5.50159 8.25664 5.47547 8.3784 5.42475C8.50016 5.37402 8.61067 5.29969 8.70356 5.20604C8.79721 5.11315 8.87154 5.00264 8.92227 4.88088C8.97299 4.75912 8.99911 4.62853 8.99911 4.49662C8.99911 4.36472 8.97299 4.23412 8.92227 4.11237C8.87154 3.99061 8.79721 3.8801 8.70356 3.78721L5.70604 0.789694C5.61315 0.696043 5.50264 0.621711 5.38089 0.570984C5.25913 0.520257 5.12853 0.494141 4.99663 0.494141C4.86472 0.494141 4.73413 0.520257 4.61237 0.570984C4.49061 0.621711 4.3801 0.696043 4.28721 0.789694L1.2897 3.78721C1.10155 3.97536 0.99585 4.23054 0.99585 4.49662C0.99585 4.7627 1.10155 5.01789 1.2897 5.20604C1.47785 5.39418 1.73303 5.49988 1.99911 5.49988C2.26519 5.49988 2.52037 5.39418 2.70852 5.20604ZM7.28473 9.78224L4.99663 12.0803L2.70852 9.78224C2.61536 9.68908 2.50476 9.61518 2.38304 9.56476C2.26132 9.51435 2.13086 9.4884 1.99911 9.4884C1.86736 9.4884 1.7369 9.51435 1.61518 9.56476C1.49346 9.61518 1.38286 9.68908 1.2897 9.78224C1.19654 9.87541 1.12264 9.986 1.07222 10.1077C1.0218 10.2294 0.99585 10.3599 0.99585 10.4917C0.99585 10.6234 1.0218 10.7539 1.07222 10.8756C1.12264 10.9973 1.19654 11.1079 1.2897 11.2011L4.28721 14.1986C4.3801 14.2922 4.49061 14.3666 4.61237 14.4173C4.73413 14.468 4.86472 14.4941 4.99663 14.4941C5.12853 14.4941 5.25913 14.468 5.38089 14.4173C5.50264 14.3666 5.61315 14.2922 5.70604 14.1986L8.70356 11.2011C8.8917 11.0129 8.9974 10.7577 8.9974 10.4917C8.9974 10.2256 8.8917 9.97039 8.70356 9.78224C8.51541 9.5941 8.26023 9.4884 7.99414 9.4884C7.72806 9.4884 7.47288 9.5941 7.28473 9.78224Z"
+                    fill="#B3B3B3"
+                  />
+                </svg>
+              </span>
+            </p>
+            {hideMaritalStatus && (
+              <>
+                <p
+                  onClick={() => {
+                    setHideMaritalStatusValue(false);
+                    let e = {
+                      target: { name: "maritalStatus", value: "married" },
+                    };
+                    handleChange(e);
+                  }}
+                  className="block flex  py-1 justify-between cursor-pointer"
+                >
+                  <span>Married</span>
+                  <span className="text-xl">&gt;</span>
+                </p>
+                <p
+                  onClick={() => {
+                    setHideMaritalStatusValue(false);
+                    let e = {
+                      target: { name: "maritalStatus", value: "unmarried" },
+                    };
+                    handleChange(e);
+                  }}
+                  className="block flex  py-1 justify-between cursor-pointer"
+                >
+                  <span>Unmarried</span>
+                  <span className="text-xl">&gt;</span>
+                </p>
+                <p
+                  onClick={() => {
+                    setHideMaritalStatusValue(false);
+                    let e = {
+                      target: { name: "maritalStatus", value: "others" },
+                    };
+                    handleChange(e);
+                  }}
+                  className="block flex py-1 justify-between cursor-pointer"
+                >
+                  <span>Others</span>
+                  <span className="text-xl">&gt;</span>
+                </p>
+              </>
+            )}
+          </div>
+          <p className="text-red-500 text-xs">{error.maritalStatus}</p>
+
+          {/* <select
             name="maritalStatus"
             onChange={handleChange}
             className="w-[100%] rounded-2xl p-3 border-2"
@@ -504,7 +592,7 @@ const Profile = ({ setMessage }) => {
             <option value="married">Married</option>
             <option value="unmarried">Unmarried</option>
             <option value="others">Others</option>
-          </select>
+          </select> */}
         </div>
         <div className="w-[90%] mx-auto py-2">
           <p>Date Of Birth</p>

@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { ReactComponent as Loading } from "../assets/Loading.svg";
 import moment from "moment";
 const Profile = ({ setMessage }) => {
   const navigate = useNavigate();
@@ -14,6 +15,7 @@ const Profile = ({ setMessage }) => {
       setPasswordType("text");
     }
   };
+  const [saving, setSaving] = useState(false)
   const [profilePicFile, setProfilePicFile] = useState(null);
   const [form, setForm] = useState({
     userName: "",
@@ -168,6 +170,7 @@ const Profile = ({ setMessage }) => {
       if (!tnc) return;
       let formValidated = validateForm();
       if (!formValidated) return;
+      setSaving(true)
       const data = new FormData();
       data.append("file", profilePicFile);
       data.append("upload_preset", "ml_default");
@@ -187,6 +190,7 @@ const Profile = ({ setMessage }) => {
       setMessage({ statusCode: 200, text: response.data.message });
       navigate("/");
     } catch (err) {
+      setSaving(false)
       setMessage({
         statusCode: err.response.status,
         text: err.response.data.message,
@@ -198,6 +202,7 @@ const Profile = ({ setMessage }) => {
 
   return (
     <div className="w-[375px]  h-[800px] mx-auto relative">
+      {<div className={`w-[100%] h-[100%] absolute flex justify-between items-center ${saving ? "visible" : "hidden"}`}><Loading className={`w-[80px]  h-[80px]`} /></div>}
       <div className="bg-gray-100 p-3 h-[50px]">
         <div className="w-[60%] flex justify-between  ">
           <p className="text-xs my-auto">
@@ -228,9 +233,8 @@ const Profile = ({ setMessage }) => {
               name="userName"
               placeholder="Enter name here"
               onChange={handleChange}
-              className={`border-2 p-2 rounded-2xl   ${
-                error.userName ? "border-red-500" : "border-gray-500"
-              } `}
+              className={`border-2 p-2 rounded-2xl   ${error.userName ? "border-red-500" : "border-gray-500"
+                } `}
             />
             <p className="text-red-500 text-xs">{error.userName}</p>
             <p className="text-red-500 text-xs">{error.profilePic}</p>
@@ -288,9 +292,8 @@ const Profile = ({ setMessage }) => {
             name="email"
             placeholder="Your email ID"
             onChange={handleChange}
-            className={`border-2 rounded-2xl  p-2 w-[100%] ${
-              error.email ? "border-red-500" : "border-gray-500"
-            } `}
+            className={`border-2 rounded-2xl  p-2 w-[100%] ${error.email ? "border-red-500" : "border-gray-500"
+              } `}
           />
           <p className="text-red-500 text-xs">{error.email}</p>
         </div>
@@ -303,14 +306,12 @@ const Profile = ({ setMessage }) => {
               name="password"
               placeholder="Min 8 char"
               onChange={handleChange}
-              className={`border-2 rounded-2xl p-2 w-[100%]  ${
-                error.password ? "border-red-500" : "border-gray-500"
-              } `}
+              className={`border-2 rounded-2xl p-2 w-[100%]  ${error.password ? "border-red-500" : "border-gray-500"
+                } `}
             />
             <svg
-              className={`${
-                passwordType === "password" ? "visible" : "hidden"
-              }`}
+              className={`${passwordType === "password" ? "visible" : "hidden"
+                }`}
               onClick={togglePassword}
               width="19"
               height="14"
@@ -356,18 +357,16 @@ const Profile = ({ setMessage }) => {
             placeholder="Enter mobile no"
             name="phoneNumber"
             onChange={handleChange}
-            className={`border-2 rounded-2xl p-2  w-[80%] ${
-              error.phoneNumber ? "border-red-500" : "border-gray-500"
-            } `}
+            className={`border-2 rounded-2xl p-2  w-[80%] ${error.phoneNumber ? "border-red-500" : "border-gray-500"
+              } `}
           />
           <p className="text-red-500 text-xs">{error.phoneNumber}</p>
         </div>
         <div className="py-1 flex w-[90%] mx-auto">
           <p className="w-[30%] my-auto">Gender</p>
           <div
-            className={`flex rounded-2xl p-2 w-[70%] justify-around  ${
-              error.gender ? "border-2 border-red-500" : "border-gray-500"
-            } `}
+            className={`flex rounded-2xl p-2 w-[70%] justify-around  ${error.gender ? "border-2 border-red-500" : "border-gray-500"
+              } `}
           >
             <div className="w-[50%]  flex items-center justify-around">
               <input
@@ -386,9 +385,8 @@ const Profile = ({ setMessage }) => {
                     viewBox="0 0 20 20"
                     fill="none"
                     xmlns="http://www.w3.org/2000/svg"
-                    className={`${
-                      form.gender == "male" ? "visible" : "hidden"
-                    }`}
+                    className={`${form.gender == "male" ? "visible" : "hidden"
+                      }`}
                   >
                     <circle
                       cx="10"
@@ -399,11 +397,10 @@ const Profile = ({ setMessage }) => {
                     />
                   </svg>
                   <div
-                    className={`${
-                      form.gender == "female"
-                        ? " w-[20px] border-2 h-[20px] rounded-[100%]"
-                        : ""
-                    }`}
+                    className={`${form.gender == "female"
+                      ? " w-[20px] border-2 h-[20px] rounded-[100%]"
+                      : ""
+                      }`}
                   ></div>
                   <p>Male</p>
                 </div>
@@ -426,9 +423,8 @@ const Profile = ({ setMessage }) => {
                     viewBox="0 0 20 20"
                     fill="none"
                     xmlns="http://www.w3.org/2000/svg"
-                    className={`${
-                      form.gender == "female" ? "visible" : "hidden"
-                    }`}
+                    className={`${form.gender == "female" ? "visible" : "hidden"
+                      }`}
                   >
                     <circle
                       cx="10"
@@ -439,11 +435,10 @@ const Profile = ({ setMessage }) => {
                     />
                   </svg>
                   <div
-                    className={`${
-                      form.gender != "female"
-                        ? "border-2 w-[20px] h-[20px] rounded-[100%]"
-                        : ""
-                    }`}
+                    className={`${form.gender != "female"
+                      ? "border-2 w-[20px] h-[20px] rounded-[100%]"
+                      : ""
+                      }`}
                   ></div>
                   <p>Female</p>
                 </div>
@@ -455,9 +450,8 @@ const Profile = ({ setMessage }) => {
         <div className="w-[90%] py-1 flex mx-auto">
           <p className="w-[30%] my-auto">Language</p>
           <div
-            className={` w-[70%] rounded-2xl flex justify-center   ${
-              error.language ? "border-2 border-red-500" : "border-gray-500"
-            } `}
+            className={` w-[70%] rounded-2xl flex justify-center   ${error.language ? "border-2 border-red-500" : "border-gray-500"
+              } `}
           >
             <input
               className="hidden"
@@ -469,11 +463,10 @@ const Profile = ({ setMessage }) => {
             />
             <label
               htmlFor="english"
-              className={`${
-                form.language === "english"
-                  ? "bg-[#525298] text-white rounded-tl-lg rounded-tr-lg rounded-br-lg"
-                  : ""
-              } w-[40%] text-center cursor-pointer`}
+              className={`${form.language === "english"
+                ? "bg-[#525298] text-white rounded-tl-lg rounded-tr-lg rounded-br-lg"
+                : ""
+                } w-[40%] text-center cursor-pointer`}
             >
               English
             </label>
@@ -487,11 +480,10 @@ const Profile = ({ setMessage }) => {
             />
             <label
               htmlFor="hindi"
-              className={`${
-                form.language === "hindi"
-                  ? "bg-[#525298] text-white rounded-tl-lg rounded-tr-lg rounded-br-lg"
-                  : ""
-              } w-[40%] text-center cursor-pointer`}
+              className={`${form.language === "hindi"
+                ? "bg-[#525298] text-white rounded-tl-lg rounded-tr-lg rounded-br-lg"
+                : ""
+                } w-[40%] text-center cursor-pointer`}
             >
               Hindi
             </label>
@@ -501,22 +493,20 @@ const Profile = ({ setMessage }) => {
         <div className=" w-[90%] mx-auto mt-4">
           <p className="">Marital Status</p>
           <div
-            className={`border-2 p-2 ${
-              error.maritalStatus ? "border-red-500" : ""
-            } rounded-2xl`}
+            className={`border-2 p-2 ${error.maritalStatus ? "border-red-500" : ""
+              } rounded-2xl`}
           >
             <p
               onClick={() => {
                 setHideMaritalStatusValue(true);
               }}
-              className={`${
-                hideMaritalStatus ? "hidden" : "visible"
-              } flex justify-between cursor-pointer items-center`}
+              className={`${hideMaritalStatus ? "hidden" : "visible"
+                } flex justify-between cursor-pointer items-center`}
             >
               <span>
                 {form.maritalStatus
                   ? form.maritalStatus.charAt(0).toUpperCase() +
-                    form.maritalStatus.slice(1)
+                  form.maritalStatus.slice(1)
                   : "select an option"}
               </span>
               <span>
@@ -634,9 +624,8 @@ const Profile = ({ setMessage }) => {
           <p>Time of Birth</p>
 
           <input
-            className={`border-2 w-[100%] p-2 rounded-2xl ${
-              error.timeOfBirth ? "border-red-500" : "border-gray-500"
-            } `}
+            className={`border-2 w-[100%] p-2 rounded-2xl ${error.timeOfBirth ? "border-red-500" : "border-gray-500"
+              } `}
             type={chooseTime}
             id="time"
             onFocus={() => {
@@ -681,9 +670,8 @@ const Profile = ({ setMessage }) => {
               viewBox="0 0 10 8"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
-              className={`absolute left-[18.75%] right-[18.75%] top-[28%] ${
-                tnc ? "visible" : "hidden"
-              }`}
+              className={`absolute left-[18.75%] right-[18.75%] top-[28%] ${tnc ? "visible" : "hidden"
+                }`}
             >
               <path
                 d="M8.49373 0.758435C8.83831 0.413855 9.39698 0.413855 9.74156 0.758435C10.0861 1.10302 10.0861 1.66169 9.74156 2.00627L4.44745 7.30039C4.10287 7.64497 3.54419 7.64497 3.19961 7.30039L0.258435 4.35921C-0.0861451 4.01463 -0.0861451 3.45596 0.258435 3.11138C0.603015 2.7668 1.16169 2.7668 1.50627 3.11138L3.82353 5.42863L8.49373 0.758435Z"
@@ -694,9 +682,8 @@ const Profile = ({ setMessage }) => {
           <p className="ml-2">I accept the terms and conditions</p>
         </div>
         <button
-          className={`w-[90%] mb-[20px] block mt-5 mx-auto h-[50px] bg-violet-500 rounded-tl-lg rounded-tr-lg rounded-br-lg text-white ${
-            tnc ? "" : "!bg-gray-400 "
-          }`}
+          className={`w-[90%] mb-[20px] block mt-5 mx-auto h-[50px] bg-violet-500 rounded-tl-lg rounded-tr-lg rounded-br-lg text-white ${tnc ? "" : "!bg-gray-400 "
+            }`}
           onClick={onSubmit}
         >
           Save

@@ -226,7 +226,7 @@ const Home = () => {
         </div>
       </div>
       <div className="h-[700px] overflow-auto">
-        {loading && <Loading />}
+        {loading && <Loading className={`w-[80px]  h-[80px]`} />}
         {articles?.map((article) => {
           return <NewsCard article={article} key={article._id} />;
         })}

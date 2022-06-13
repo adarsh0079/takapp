@@ -202,7 +202,10 @@ const Profile = ({ setMessage }) => {
 
   return (
     <div className="w-[375px]  h-[800px] mx-auto relative">
-      {<div className={`w-[100%] h-[100%] absolute flex justify-between items-center ${saving ? "visible" : "hidden"}`}><Loading className={`w-[80px]  h-[80px]`} /></div>}
+      {<div className={`w-[100%] h-[100%] absolute flex justify-between items-center  ${saving ? "visible" : "hidden"}`} style={{zIndex:"100"}}>
+        <div className="w-[100%] h-[100%] absolute bg-gray-100 opacity-50 blur"></div>
+        <Loading className={`w-[80px] !blur-none h-[80px]`} />
+        </div>}
       <div className="bg-gray-100 p-3 h-[50px]">
         <div className="w-[60%] flex justify-between  ">
           <p className="text-xs my-auto">
